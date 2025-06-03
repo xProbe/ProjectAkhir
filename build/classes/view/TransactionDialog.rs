@@ -1,2 +1,0 @@
-view.TransactionDialog
-view.JDateChooser
