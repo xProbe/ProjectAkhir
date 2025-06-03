@@ -1,0 +1,2 @@
+view.TransactionDialog
+view.JDateChooser
