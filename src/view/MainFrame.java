@@ -27,39 +27,35 @@ public class MainFrame extends JFrame {
 
         setTitle("💰 Aplikasi Manajemen Keuangan");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(850, 620);
+        setSize(870, 620);
         setLocationRelativeTo(null);
     }
 
     private void initComponents() {
-        // Table model dan table
         tableModel = new TransactionTableModel();
         transactionTable = new JTable(tableModel);
         transactionTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        // Styling table header
         JTableHeader header = transactionTable.getTableHeader();
         header.setFont(new Font("SansSerif", Font.BOLD, 14));
-        header.setBackground(new Color(63, 81, 181));
+        header.setBackground(new Color(33, 150, 243));
         header.setForeground(Color.WHITE);
         header.setOpaque(true);
+        header.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        transactionTable.setRowHeight(26);
+        transactionTable.setRowHeight(28);
         transactionTable.setFont(new Font("SansSerif", Font.PLAIN, 13));
         transactionTable.setShowVerticalLines(false);
-        transactionTable.setGridColor(new Color(220, 220, 220));
+        transactionTable.setGridColor(new Color(230, 230, 230));
 
-        // Summary labels
         totalIncomeLabel = new JLabel("Total Pemasukan: Rp 0");
         totalExpenseLabel = new JLabel("Total Pengeluaran: Rp 0");
         balanceLabel = new JLabel("Saldo: Rp 0");
 
-        // Style labels
         totalIncomeLabel.setForeground(new Color(56, 142, 60));
         totalExpenseLabel.setForeground(new Color(211, 47, 47));
         balanceLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
 
-        // Tambah padding
         totalIncomeLabel.setBorder(new EmptyBorder(5, 5, 5, 5));
         totalExpenseLabel.setBorder(new EmptyBorder(5, 5, 5, 5));
         balanceLabel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -69,34 +65,39 @@ public class MainFrame extends JFrame {
         setLayout(new BorderLayout(12, 12));
         getContentPane().setBackground(new Color(245, 245, 245));
 
-        // Top panel - Summary
-        JPanel summaryPanel = new JPanel(new GridLayout(1, 3, 10, 0));
-        summaryPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY),
-                "📊 Ringkasan Keuangan", TitledBorder.LEFT, TitledBorder.TOP, new Font("SansSerif", Font.BOLD, 14)));
-        summaryPanel.setBackground(new Color(250, 250, 250));
+        JPanel summaryPanel = new JPanel(new GridLayout(1, 3, 12, 0));
+        Border roundedBorder = BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(180, 180, 180), 1, true),
+            new EmptyBorder(12, 12, 12, 12)
+        );
+        summaryPanel.setBorder(BorderFactory.createTitledBorder(
+            roundedBorder, "📊 Ringkasan Keuangan",
+            TitledBorder.LEFT, TitledBorder.TOP, new Font("SansSerif", Font.BOLD, 14)
+        ));
+        summaryPanel.setBackground(new Color(252, 252, 252));
 
         summaryPanel.add(totalIncomeLabel);
         summaryPanel.add(totalExpenseLabel);
         summaryPanel.add(balanceLabel);
         add(summaryPanel, BorderLayout.NORTH);
 
-        // Center panel - Table
         JPanel tablePanel = new JPanel(new BorderLayout());
-        tablePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY),
-                "📑 Daftar Transaksi", TitledBorder.LEFT, TitledBorder.TOP, new Font("SansSerif", Font.BOLD, 14)));
-        tablePanel.setBackground(new Color(250, 250, 250));
+        tablePanel.setBorder(BorderFactory.createTitledBorder(
+            roundedBorder, "📑 Daftar Transaksi",
+            TitledBorder.LEFT, TitledBorder.TOP, new Font("SansSerif", Font.BOLD, 14)
+        ));
+        tablePanel.setBackground(new Color(252, 252, 252));
 
         tablePanel.add(new JScrollPane(transactionTable), BorderLayout.CENTER);
         add(tablePanel, BorderLayout.CENTER);
 
-        // Bottom panel - Buttons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
         buttonPanel.setBackground(new Color(245, 245, 245));
 
-        JButton addButton = createButton("➕ Tambah");
-        JButton editButton = createButton("✏️ Edit");
-        JButton deleteButton = createButton("🗑️ Hapus");
-        JButton refreshButton = createButton("🔄 Refresh");
+        JButton addButton = createButton("➕ Tambah", new Color(76, 175, 80));
+        JButton editButton = createButton("✏️ Edit", new Color(33, 150, 243));
+        JButton deleteButton = createButton("🗑️ Hapus", new Color(244, 67, 54));
+        JButton refreshButton = createButton("🔄 Refresh", new Color(255, 152, 0));
 
         buttonPanel.add(addButton);
         buttonPanel.add(editButton);
@@ -104,33 +105,31 @@ public class MainFrame extends JFrame {
         buttonPanel.add(refreshButton);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // Event handlers
         addButton.addActionListener(e -> addTransaction());
         editButton.addActionListener(e -> editTransaction());
         deleteButton.addActionListener(e -> deleteTransaction());
         refreshButton.addActionListener(e -> refreshData());
     }
 
-    private JButton createButton(String text) {
+    private JButton createButton(String text, Color bgColor) {
         JButton button = new JButton(text);
         button.setFont(new Font("SansSerif", Font.PLAIN, 13));
         button.setFocusPainted(false);
-        button.setBackground(new Color(63, 81, 181));
+        button.setBackground(bgColor);
         button.setForeground(Color.WHITE);
-        button.setBorder(new LineBorder(new Color(40, 53, 147)));
+        button.setPreferredSize(new Dimension(140, 38));
+        button.setBorder(BorderFactory.createLineBorder(bgColor.darker(), 1, true));
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        button.setPreferredSize(new Dimension(140, 36));
 
-        // Hover effect
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                button.setBackground(new Color(48, 63, 159));
+                button.setBackground(bgColor.darker());
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                button.setBackground(new Color(63, 81, 181));
+                button.setBackground(bgColor);
             }
         });
+
         return button;
     }
 
