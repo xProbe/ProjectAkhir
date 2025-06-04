@@ -148,3 +148,11 @@ Beberapa ide untuk pengembangan:
 - Multiple currency support
 - Fitur backup/restore
 - Manajemen budget 
+
+## Implementasi 5 Pillar OOP 
+  
+  - Encapsulation : file model/Transaction.java -> akses data hanya melalui getter/setter (private)
+  - Inheritance : file view/MainFrame.java -> MainFrame extends JFrame 
+  - Polymorphism : file view/TransactionTableModel.java -> method overriding 
+  - Abstraction : file model/DatabaseConnection.java -> menyembunyikan kompleksitas koneksi database
+  - Interface : file view/MainFrame.java -> implementasi interface Java Swing (addActionListener)
